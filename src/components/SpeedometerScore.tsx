@@ -30,7 +30,7 @@ const SpeedometerScore: React.FC<SpeedometerScoreProps> = ({ score, isDarkTheme 
 
   useEffect(() => {
     if (isVisible) {
-      const timer = setTimeout(() => {
+      // Start animation immediately when visible
         let current = 0;
         const increment = score / 60;
         const interval = setInterval(() => {
@@ -41,9 +41,6 @@ const SpeedometerScore: React.FC<SpeedometerScoreProps> = ({ score, isDarkTheme 
           }
           setAnimatedScore(Math.round(current));
         }, 25);
-      }, 500);
-
-      return () => clearTimeout(timer);
     }
   }, [isVisible, score]);
 

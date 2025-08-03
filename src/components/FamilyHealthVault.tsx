@@ -84,9 +84,9 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
 
   return (
     <div className="relative">
-      <h3 className="text-lg font-semibold mb-4">Family Health Vault</h3>
+      <h3 className={`text-lg font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Family Health Vault</h3>
       
-      <div className={`relative w-full h-80 ${isDarkTheme ? 'bg-gray-800/30' : 'bg-gray-100/30'} rounded-xl overflow-hidden`}>
+      <div className={`relative w-full h-64 ${isDarkTheme ? 'bg-gray-900/40' : 'bg-gray-100/40'} rounded-xl overflow-hidden border ${isDarkTheme ? 'border-gray-700/50' : 'border-gray-200/50'}`}>
         <svg width="100%" height="100%" className="absolute inset-0">
           {connections.map((connection, index) => {
             const fromMember = familyMembers.find(m => m.id === connection.from);
@@ -148,28 +148,32 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
                     initial={{ opacity: 0, y: isTooltipAbove ? 10 : -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: isTooltipAbove ? 10 : -10, scale: 0.8 }}
-                    className={`absolute left-1/2 transform -translate-x-1/2 p-3 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg min-w-32 z-50 ${tooltipPositionClasses}`}
+                    className={`absolute left-1/2 transform -translate-x-1/2 p-3 ${
+                      isDarkTheme 
+                        ? 'bg-gray-900/95 border-gray-700' 
+                        : 'bg-white/95 border-gray-300'
+                    } backdrop-blur-sm border rounded-lg shadow-xl min-w-36 z-50 ${tooltipPositionClasses}`}
                   >
                     <div className="text-center">
-                      <div className="font-bold text-white text-sm mb-2">{member.name}</div>
-                      <div className="text-xs text-gray-400 mb-2">Age: {member.age}</div>
+                      <div className={`font-bold text-sm mb-2 ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>{member.name}</div>
+                      <div className={`text-xs mb-2 ${isDarkTheme ? 'text-gray-400' : 'text-gray-600'}`}>Age: {member.age}</div>
                       <div className="space-y-1">
-                        <div className="flex items-center justify-between text-xs">
-                          <span>Diabetes:</span>
+                        <div className={`flex items-center justify-between text-xs ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <span className="mr-2">Diabetes:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.diabetes) }}
                           />
                         </div>
-                        <div className="flex items-center justify-between text-xs">
-                          <span>Heart:</span>
+                        <div className={`flex items-center justify-between text-xs ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <span className="mr-2">Heart:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.heart) }}
                           />
                         </div>
-                        <div className="flex items-center justify-between text-xs">
-                          <span>BP:</span>
+                        <div className={`flex items-center justify-between text-xs ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                          <span className="mr-2">BP:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.bp) }}
@@ -177,7 +181,11 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
                         </div>
                       </div>
                     </div>
-                    <div className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${arrowPositionClasses}`}></div>
+                    <div className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${
+                      isTooltipAbove 
+                        ? `border-t-4 ${isDarkTheme ? 'border-t-gray-900' : 'border-t-white'}` 
+                        : `border-b-4 ${isDarkTheme ? 'border-b-gray-900' : 'border-b-white'}`
+                    }`}></div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -186,7 +194,7 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
         })}
       </div>
 
-      <div className="mt-4 flex items-center justify-center space-x-6 text-xs">
+      <div className={`mt-4 flex items-center justify-center space-x-6 text-xs ${isDarkTheme ? 'text-gray-300' : 'text-gray-700'}`}>
         <div className="flex items-center">
           <div className="w-3 h-3 rounded-full bg-red-500 mr-1"></div>
           <span>High Risk</span>

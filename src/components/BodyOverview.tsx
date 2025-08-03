@@ -194,9 +194,9 @@ const BodyOverview: React.FC = () => {
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ delay: 1.0 }}
-      className="mb-8"
+      className="w-full"
     >
-      <div className="bg-gray-900/60 backdrop-blur-xl rounded-2xl p-6 border border-gray-800">
+      <div>
         <h3 className="text-xl font-bold mb-4">Body Overview</h3>
         <HumanBody biomarkers={biomarkerData} />
       </div>

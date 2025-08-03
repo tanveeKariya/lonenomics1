@@ -88,18 +88,18 @@ const GlucoseTrendChart: React.FC<AdvancedGlucoseChartProps> = ({ dataIndex, isD
   }
 
   return (
-    <div className="w-full h-full bg-gray-900 rounded-lg border border-gray-800">
+    <div className={`w-full h-full rounded-lg ${isDarkTheme ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border`}>
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Glucose Levels</h3>
+          <h3 className={`text-lg font-semibold ${isDarkTheme ? 'text-white' : 'text-gray-900'}`}>Glucose Levels</h3>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-teal-400"></div>
-              <span className="text-sm text-gray-300">Glucose</span>
+              <span className={`text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Glucose</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-              <span className="text-sm text-gray-300">Target</span>
+              <span className={`text-sm ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>Target</span>
             </div>
           </div>
         </div>
@@ -121,14 +121,14 @@ const GlucoseTrendChart: React.FC<AdvancedGlucoseChartProps> = ({ dataIndex, isD
                   y1={line.y}
                   x2={chartWidth}
                   y2={line.y}
-                  stroke="rgba(55, 65, 81, 0.3)"
+                  stroke={isDarkTheme ? "rgba(55, 65, 81, 0.3)" : "rgba(229, 231, 235, 0.8)"}
                   strokeWidth="1"
                 />
                 <text
                   x="-15"
                   y={line.y + 4}
                   textAnchor="end"
-                  className="text-xs fill-gray-400"
+                  className={`text-xs ${isDarkTheme ? 'fill-gray-400' : 'fill-gray-600'}`}
                 >
                   {line.value}
                 </text>
@@ -200,7 +200,7 @@ const GlucoseTrendChart: React.FC<AdvancedGlucoseChartProps> = ({ dataIndex, isD
                 x={(hour / 24) * chartWidth}
                 y={chartHeight + 25}
                 textAnchor="middle"
-                className="text-xs fill-gray-400"
+                className={`text-xs ${isDarkTheme ? 'fill-gray-400' : 'fill-gray-600'}`}
               >
                 {hour === 24 ? '00:00' : `${hour.toString().padStart(2, '0')}:00`}
               </text>
@@ -215,11 +215,11 @@ const GlucoseTrendChart: React.FC<AdvancedGlucoseChartProps> = ({ dataIndex, isD
               width="100"
               height="70"
               rx="8"
-              fill="rgba(17, 24, 39, 0.8)"
-              stroke="rgba(55, 65, 81, 0.5)"
+              fill={isDarkTheme ? "rgba(17, 24, 39, 0.8)" : "rgba(255, 255, 255, 0.9)"}
+              stroke={isDarkTheme ? "rgba(55, 65, 81, 0.5)" : "rgba(229, 231, 235, 0.8)"}
               strokeWidth="1"
             />
-            <text x="50" y="20" textAnchor="middle" className="text-xs fill-gray-400">
+            <text x="50" y="20" textAnchor="middle" className={`text-xs ${isDarkTheme ? 'fill-gray-400' : 'fill-gray-600'}`}>
               Current Level
             </text>
             <text x="50" y="40" textAnchor="middle" className="text-lg font-bold fill-teal-400">

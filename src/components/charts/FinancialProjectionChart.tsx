@@ -3,34 +3,34 @@ import { motion } from 'framer-motion';
 
 const FinancialProjectionChart: React.FC = () => {
   const years = ['2024', '2025', '2026', '2027', '2028', '2029', '2030'];
-  const savings = [0, 2500, 5200, 8100, 11500, 15200, 19800];
-  const costs = [0, 800, 1400, 2200, 3000, 3900, 4800];
+  const costs = [0, 2500, 5200, 8100, 11500, 15200, 19800]; // Red line (upper)
+  const savings = [0, 800, 1400, 2200, 3000, 3900, 4800]; // Green line (lower)
   
-  const maxValue = Math.max(...savings, ...costs);
+  const maxValue = Math.max(...costs, ...savings);
   const width = 600;
   const height = 240;
   const padding = { top: 20, right: 40, bottom: 40, left: 60 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
   
-  const getSavingsPoints = () => {
-    return savings.map((value, index) => {
+  const getCostsPoints = () => {
+    return costs.map((value, index) => {
       const x = (index / (savings.length - 1)) * chartWidth;
       const y = chartHeight - ((value / maxValue) * chartHeight);
       return `${x},${y}`;
     }).join(' ');
   };
 
-  const getCostsPoints = () => {
-    return costs.map((value, index) => {
+  const getSavingsPoints = () => {
+    return savings.map((value, index) => {
       const x = (index / (costs.length - 1)) * chartWidth;
       const y = chartHeight - ((value / maxValue) * chartHeight);
       return `${x},${y}`;
     }).join(' ');
   };
 
-  const savingsPoints = getSavingsPoints();
   const costsPoints = getCostsPoints();
+  const savingsPoints = getSavingsPoints();
 
   // Grid lines
   const gridLines = [];
@@ -41,29 +41,20 @@ const FinancialProjectionChart: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full bg-gray-900 rounded-lg border border-gray-800">
+    <div className="w-full h-full">
       <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Financial Projection</h3>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded-full bg-teal-400"></div>
-              <span className="text-sm text-gray-300">Savings</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded-full bg-red-400"></div>
-              <span className="text-sm text-gray-300">Costs</span>
-            </div>
+        <div className="flex items-center space-x-4 mb-4">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <span className="text-sm text-gray-400">Costs</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <span className="text-sm text-gray-400">Savings</span>
           </div>
         </div>
         
         <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`}>
-          <defs>
-            <linearGradient id="savingsAreaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#14B8A6" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#14B8A6" stopOpacity="0.02" />
-            </linearGradient>
-          </defs>
 
           <g transform={`translate(${padding.left}, ${padding.top})`}>
             {/* Grid lines */}
@@ -88,20 +79,11 @@ const FinancialProjectionChart: React.FC = () => {
               </g>
             ))}
 
-            {/* Area under savings curve */}
-            <motion.polygon
-              points={`0,${chartHeight} ${savingsPoints} ${chartWidth},${chartHeight}`}
-              fill="url(#savingsAreaGradient)"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-            />
-
-            {/* Savings line */}
+            {/* Costs line (red, upper) */}
             <motion.polyline
-              points={savingsPoints}
+              points={costsPoints}
               fill="none"
-              stroke="#14B8A6"
+              stroke="#EF4444"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -110,28 +92,27 @@ const FinancialProjectionChart: React.FC = () => {
               transition={{ duration: 1.5, ease: "easeInOut" }}
             />
 
-            {/* Costs line */}
+            {/* Savings line (green, lower) */}
             <motion.polyline
-              points={costsPoints}
+              points={savingsPoints}
               fill="none"
-              stroke="#EF4444"
+              stroke="#10B981"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeDasharray="6,4"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 1.5, ease: "easeInOut", delay: 0.3 }}
             />
 
-            {/* Data points for savings */}
-            {savings.map((value, index) => (
+            {/* Data points for costs */}
+            {costs.map((value, index) => (
               <motion.circle
-                key={`savings-${index}`}
-                cx={(index / (savings.length - 1)) * chartWidth}
+                key={`costs-${index}`}
+                cx={(index / (costs.length - 1)) * chartWidth}
                 cy={chartHeight - ((value / maxValue) * chartHeight)}
                 r="4"
-                fill="#14B8A6"
+                fill="#EF4444"
                 stroke="#1F2937"
                 strokeWidth="2"
                 initial={{ scale: 0 }}
@@ -141,14 +122,14 @@ const FinancialProjectionChart: React.FC = () => {
               />
             ))}
 
-            {/* Data points for costs */}
-            {costs.map((value, index) => (
+            {/* Data points for savings */}
+            {savings.map((value, index) => (
               <motion.circle
-                key={`costs-${index}`}
-                cx={(index / (costs.length - 1)) * chartWidth}
+                key={`savings-${index}`}
+                cx={(index / (savings.length - 1)) * chartWidth}
                 cy={chartHeight - ((value / maxValue) * chartHeight)}
                 r="3"
-                fill="#EF4444"
+                fill="#10B981"
                 stroke="#1F2937"
                 strokeWidth="2"
                 initial={{ scale: 0 }}
