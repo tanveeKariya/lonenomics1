@@ -83,10 +83,10 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
   const tooltipThresholdY = 50;
 
   return (
-    <div className="relative overflow-visible">
+    <div className="relative">
       <h3 className="text-lg font-semibold mb-4">Family Health Vault</h3>
       
-      <div className={`relative w-full h-80 ${isDarkTheme ? 'bg-gray-800/30' : 'bg-gray-100/30'} rounded-xl overflow-visible`}>
+      <div className={`relative w-full h-80 ${isDarkTheme ? 'bg-gray-800/30' : 'bg-gray-100/30'} rounded-xl overflow-hidden`}>
         <svg width="100%" height="100%" className="absolute inset-0">
           {connections.map((connection, index) => {
             const fromMember = familyMembers.find(m => m.id === connection.from);
@@ -109,14 +109,14 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
 
         {familyMembers.map((member) => {
           const isTooltipAbove = member.y >= tooltipThresholdY;
-          const tooltipPositionClasses = isTooltipAbove ? "bottom-full mb-2" : "top-full mt-2";
+          const tooltipPositionClasses = isTooltipAbove ? "bottom-full mb-3" : "top-full mt-3";
           const arrowPositionClasses = isTooltipAbove ? "top-full border-t-4 border-t-gray-900" : "bottom-full border-b-4 border-b-gray-900";
           const isSelected = selectedMember === member.id;
 
           return (
             <div
               key={member.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-10"
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
               style={{ left: `${member.x}%`, top: `${member.y}%` }}
               onMouseEnter={() => setHoveredMember(member.id)}
               onMouseLeave={() => setHoveredMember(null)}
@@ -145,35 +145,31 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
               <AnimatePresence>
                 {hoveredMember === member.id && (
                   <motion.div
-                    initial={{ opacity: 0, y: isTooltipAbove ? 5 : -5, scale: 0.9 }}
+                    initial={{ opacity: 0, y: isTooltipAbove ? 10 : -10, scale: 0.8 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: isTooltipAbove ? 5 : -5, scale: 0.9 }}
-                    className={`absolute left-1/2 transform -translate-x-1/2 p-2 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-xl min-w-28 z-[100] ${tooltipPositionClasses}`}
-                    style={{
-                      maxWidth: '200px',
-                      whiteSpace: 'nowrap'
-                    }}
+                    exit={{ opacity: 0, y: isTooltipAbove ? 10 : -10, scale: 0.8 }}
+                    className={`absolute left-1/2 transform -translate-x-1/2 p-3 bg-gray-900/95 backdrop-blur-sm border border-gray-700 rounded-lg shadow-lg min-w-32 z-50 ${tooltipPositionClasses}`}
                   >
                     <div className="text-center">
-                      <div className="font-bold text-white text-xs mb-1">{member.name}</div>
-                      <div className="text-xs text-gray-400 mb-1">Age: {member.age}</div>
-                      <div className="space-y-0.5">
+                      <div className="font-bold text-white text-sm mb-2">{member.name}</div>
+                      <div className="text-xs text-gray-400 mb-2">Age: {member.age}</div>
+                      <div className="space-y-1">
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-300">Diabetes:</span>
+                          <span>Diabetes:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.diabetes) }}
                           />
                         </div>
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-300">Heart:</span>
+                          <span>Heart:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.heart) }}
                           />
                         </div>
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-300">BP:</span>
+                          <span>BP:</span>
                           <div
                             className="w-3 h-3 rounded-full"
                             style={{ backgroundColor: getHealthColor(member.health.bp) }}
@@ -181,7 +177,7 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
                         </div>
                       </div>
                     </div>
-                    <div className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-3 border-r-3 border-transparent ${arrowPositionClasses}`}></div>
+                    <div className={`absolute left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-transparent ${arrowPositionClasses}`}></div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -190,18 +186,18 @@ const FamilyHealthVault: React.FC<FamilyHealthVaultProps> = ({ onMemberSelect, i
         })}
       </div>
 
-      <div className="mt-6 flex items-center justify-center space-x-6 text-xs">
+      <div className="mt-4 flex items-center justify-center space-x-6 text-xs">
         <div className="flex items-center">
           <div className="w-3 h-3 rounded-full bg-red-500 mr-1"></div>
-          <span className={isDarkTheme ? 'text-gray-300' : 'text-gray-600'}>High Risk</span>
+          <span>High Risk</span>
         </div>
         <div className="flex items-center">
           <div className="w-3 h-3 rounded-full bg-yellow-500 mr-1"></div>
-          <span className={isDarkTheme ? 'text-gray-300' : 'text-gray-600'}>Moderate Risk</span>
+          <span>Moderate Risk</span>
         </div>
         <div className="flex items-center">
           <div className="w-3 h-3 rounded-full bg-green-500 mr-1"></div>
-          <span className={isDarkTheme ? 'text-gray-300' : 'text-gray-600'}>Low Risk</span>
+          <span>Low Risk</span>
         </div>
       </div>
     </div>
